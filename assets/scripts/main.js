@@ -18,7 +18,12 @@ window.addEventListener('DOMContentLoaded', init);
 // This is the first function to be called, so when you are tracing your code start here.
 async function init() {
   // fetch the recipes and wait for them to load
+  //console.log(recipes)
   let fetchSuccessful = await fetchRecipes();
+
+  //console.log("length in init " + Object.keys(recipeData).length);
+  console.log(recipeData)
+
   // if they didn't successfully load, quit the function
   if (!fetchSuccessful) {
     console.log('Recipe fetch unsuccessful');
@@ -43,6 +48,30 @@ async function fetchRecipes() {
     // in the recipes folder and fetch them from there. You'll need to add their paths to the recipes array.
 
     // Part 1 Expose - TODO
+    /*for(var i = 0; i < recipes.length; i++){
+      var check = recipes[i];
+      console.log(check);
+    }*/
+    for(let i = 0; i < recipes.length; i++){
+      let url = recipes[i];
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          recipeData[url] = data;
+          if (url = Object.keys(recipeData)[recipes.length-1]){
+            //console.log('recipe data length inside fetch = ' + Object.keys(recipeData).length);
+            resolve(true);
+            return;
+          }
+        })
+        .catch((error) => {reject(false)
+          return;
+        })
+    }
+  
+      //console.log('recipeData length = ' + Object.keys(recipeData).length);
+      //console.log('recipes length = '+ recipes.length);
+      //return 1;
   });
 }
 
@@ -54,6 +83,16 @@ function createRecipeCards() {
   // show any others you've added when the user clicks on the "Show more" button.
 
   // Part 1 Expose - TODO
+  for(const someData in recipeData){
+    //console.log(someData)
+    let element = document.querySelector("main");
+    let text = document.createTextNode(someData);
+    //console.log(text)
+    element.appendChild(text);
+
+    //<recipe-card>.data = someData;
+  }
+
 }
 
 function bindShowMore() {
